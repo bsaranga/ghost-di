@@ -9,10 +9,18 @@ describe('Decorators', () => {
         }).toThrow();
     });
 
-    it('class property added via decorator', () => {
+    it('class hidden property added via decorator', () => {
         const sc = new SealedClass();
         const mod = new ModifiableClass(sc);
-        expect((mod as any)["foo"]).toBe("bar");
+        const accessor = Object.getOwnPropertySymbols(mod).filter(sym => sym.description === "injectable")[0]
+        expect((mod as any)[accessor]).toBe(true);
+    })
+
+    it('injectable is not a property in keys', () => {
+        const sc = new SealedClass();
+        const mod = new ModifiableClass(sc);
+        const keys = Object.keys(mod);
+        expect(keys).not.toContain("injectable");
     })
 })
 

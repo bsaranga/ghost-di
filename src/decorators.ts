@@ -14,17 +14,17 @@ class SealedClass {
     }
 }
 
-function classModder<T extends new (...args: any[]) => any>(constructor: T) {
+function injectable<T extends new (...args: any[]) => any>(constructor: T) {
     return class extends constructor {
         constructor(...args: any[]) {
-            console.log(args[0])
             super(...args);
-            (this as any)["foo"] = "bar";
+            const injectable = Symbol("injectable");
+            (this as any)[injectable] = true;
         }
     }
 }
 
-@classModder
+@injectable
 class ModifiableClass {
     message: SealedClass;
     constructor(message: SealedClass) {
