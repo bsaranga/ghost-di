@@ -11,8 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 require("reflect-metadata");
 function Injectable(constructor) {
-    console.log(constructor);
-    console.log(Reflect.getMetadata('design:paramtypes', constructor));
 }
 var AnotherDep = /** @class */ (function () {
     function AnotherDep() {
@@ -29,4 +27,5 @@ var Dep = /** @class */ (function () {
     ], Dep);
     return Dep;
 }());
-var dep = new Dep(new AnotherDep());
+var deps = Reflect.getMetadata('design:paramtypes', Dep);
+console.log(deps);

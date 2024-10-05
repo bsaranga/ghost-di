@@ -1,4 +1,3 @@
-import { Container, Injectable } from "../src/container";
 import { ModifiableClass, SealedClass } from "../src/decorators";
 
 describe('Decorators', () => {

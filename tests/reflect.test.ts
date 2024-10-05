@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 
 describe('Reflection tests', () => {
-    it('', () => {
+    it('subtypes are visible', () => {
         class AnotherDep {
             constructor() {}
         }

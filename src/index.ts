@@ -1,8 +1,7 @@
 import 'reflect-metadata'
 
 function Injectable(constructor: Function) {
-    console.log(constructor)
-    console.log(Reflect.getMetadata('design:paramtypes', constructor))
+    
 }
 
 class AnotherDep {
@@ -14,4 +13,5 @@ class Dep {
     constructor(private anotherDep: AnotherDep) {}
 }
 
-const dep = new Dep(new AnotherDep())
+const deps = Reflect.getMetadata('design:paramtypes', Dep)
+console.log(deps)
