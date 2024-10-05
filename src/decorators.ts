@@ -14,4 +14,4 @@ class SealedClass {
     }
 }
 
-export default SealedClass;
+export { SealedClass };

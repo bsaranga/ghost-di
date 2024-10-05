@@ -1,4 +1,4 @@
-import SealedClass from "../src/decorators";
+import { SealedClass } from "../src/decorators";
 
 describe('Decorator test', () => {
     
