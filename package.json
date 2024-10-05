@@ -22,14 +22,9 @@
   },
   "homepage": "https://github.com/bsaranga/ghost-di#readme",
   "devDependencies": {
-    "@babel/core": "^7.25.7",
-    "@babel/plugin-proposal-decorators": "^7.25.7",
-    "@babel/preset-env": "^7.25.7",
-    "@babel/preset-typescript": "^7.25.7",
     "@types/jest": "^29.5.13",
-    "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
-    "tsx": "^4.19.1",
+    "ts-jest": "^29.2.5",
     "typescript": "^5.6.2"
   },
   "dependencies": {
