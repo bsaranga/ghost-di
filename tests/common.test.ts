@@ -1,4 +1,4 @@
-import { SealedClass } from "../src/decorators";
+import { ModifiableClass, SealedClass } from "../src/decorators";
 
 describe('Decorators', () => {
     
@@ -8,6 +8,12 @@ describe('Decorators', () => {
             (test as any)["foo"] = "bar";
         }).toThrow();
     });
+
+    it('class property added via decorator', () => {
+        const sc = new SealedClass();
+        const mod = new ModifiableClass(sc);
+        expect((mod as any)["foo"]).toBe("bar");
+    })
 })
 
 describe('Prototypes', () => {
@@ -79,5 +85,71 @@ describe('Prototypes', () => {
         }
 
         expect(Box.prototype.constructor).toBe(Box);
+    })
+})
+
+describe('Symbols', () => {
+    it('should create unique symbols', () => {
+        const sym1 = Symbol("foo");
+        const sym2 = Symbol("foo");
+        expect(sym1).not.toBe(sym2);
+    });
+
+    it('should be used as object keys', () => {
+        const sym = Symbol("foo");
+        const obj = {
+            [sym]: "bar"
+        }
+
+        expect(obj[sym]).toBe("bar");
+    });
+
+    it('should be used to create private properties', () => {
+        const sym = Symbol("foo");
+        class Foo {
+            [sym]: string;
+            constructor(value: string) {
+                this[sym] = value;
+            }
+
+            getValue() {
+                return this[sym];
+            }
+        }
+
+        const foo = new Foo("bar");
+        expect(foo.getValue()).toBe("bar");
+    });
+
+    it('should be used to create private methods', () => {
+        const sym = Symbol("foo");
+        class Foo {
+            [sym]: () => string;
+            constructor(value: string) {
+                this[sym] = () => value;
+            }
+
+            getValue() {
+                return this[sym]();
+            }
+        }
+
+        const foo = new Foo("bar");
+        expect(foo.getValue()).toBe("bar");
+    });
+
+    it('Adding a hidden property via symbols and retreiving it via reflection', () => {
+        const injectable = Symbol("injectable");
+        
+        class Foo {
+            [injectable]: boolean;
+            constructor() {
+                this[injectable] = true;
+            }
+        }
+
+        const foo = new Foo();
+        const accessor = Object.getOwnPropertySymbols(foo)[0]
+        expect((foo as any)[accessor]).toBe(true);
     })
 })
