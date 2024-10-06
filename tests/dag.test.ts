@@ -9,6 +9,12 @@ describe('DAG Data Structure', () => {
             expect(dag.nodes[0].isRoot).toBe(true);
             expect(dag.nodes[1].isRoot).toBeUndefined();
         });
+
+        it('Only unique nodes can be added', () => {
+            const dag = new DAG<number>();
+            dag.addNode({ id: "1", value: 1 });
+            expect(() => dag.addNode({ id: "1", value: 2 })).toThrow('Node with id 1 already exists');
+        })
     })
 
     describe("Cycle detection", () => {
@@ -65,5 +71,22 @@ describe('DAG Data Structure', () => {
             // cycle
             expect(() => dag.addEdge({ from: "G", to: "A" })).toThrow('Cyclic dependency detected');
         });
+    })
+
+    describe('Dependency retreival', () => {
+        it('retreives child dependencies', () => {
+            const dag = new DAG<any>();
+            dag.addNode({ id: "A", value: null });
+            dag.addNode({ id: "B", value: null });
+            dag.addNode({ id: "C", value: null });
+
+            dag.addEdge({ from: "A", to: "B" });
+            dag.addEdge({ from: "A", to: "C" });
+
+            const deps = dag.getAllDependencies("A").map(d => d.id);
+            expect(deps).toHaveLength(2);
+            expect(deps).toContain("B");
+            expect(deps).toContain("C");
+        })
     })
 })

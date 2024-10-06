@@ -22,6 +22,11 @@ export default class DAG<T> {
         if (this.nodes.length === 0) {
             node.isRoot = true;
         }
+        
+        if (this.nodes.find(n => n.id === node.id)) {
+            throw new Error(`Node with id ${node.id} already exists`);
+        }
+
         this.nodes.push(node);
     }
 
@@ -63,5 +68,34 @@ export default class DAG<T> {
         }
 
         return dfs(edge.from);
+    }
+
+    getAllDependencies(node: string | DAGNode<T>) {
+        
+        if (typeof node === 'string') {
+            node = this.nodes.find(n => n.id === node)!;
+        }
+
+        const dependencies = new Set<DAGNode<T>>();
+        const visited = new Set<DAGNode<T>>();
+
+        const dfs = (node: DAGNode<T>) => {
+            if (visited.has(node)) {
+                return;
+            }
+
+            visited.add(node);
+
+            for (const currEdge of this.edges) {
+                if (currEdge.from === node.id) {
+                    const selectedNode = this.nodes.find(n => n.id === currEdge.to);
+                    dependencies.add(selectedNode!);
+                    dfs(selectedNode!);
+                }
+            }
+        }
+
+        dfs(node);
+        return Array.from(dependencies);
     }
 }
