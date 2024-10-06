@@ -2,7 +2,7 @@ class Container {
     
     constructor() {
         const dep = Symbol('dependencies');
-        this[dep] = [];
+        this[dep] = {};
     }
 
     register(dependency: any) {

@@ -6,7 +6,7 @@ describe('Container', () => {
         const container = new Container();
         const accessor = Object.getOwnPropertySymbols(container).filter(sym => sym.description === "dependencies")[0];
         const deps = container[accessor];
-        expect(deps).toEqual([]);
+        expect(deps).toEqual({});
     });
 
     it('register dependency if it is marked by @Injectable', () => {

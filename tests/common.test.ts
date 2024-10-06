@@ -1,4 +1,6 @@
+import 'reflect-metadata';
 import { ModifiableClass, SealedClass } from "../src/decorators";
+import { Injectable } from '../src/utils';
 
 describe('Decorators', () => {
     
@@ -176,5 +178,29 @@ describe('Proxies', () => {
 
         const proxy = new Proxy(target, handler);
         expect(proxy.value).toBe(11);
+    })
+})
+
+describe('Reflection', () => {
+    it('should get constructor params', () => {
+
+        interface IDep {
+
+        }
+        
+        class Dep {
+            value: number;
+        }
+
+        function inject(type: string) {
+            return function(target: any, propertyKey: string, index: number) {
+                Reflect.defineMetadata(`d_${index}`, `${index}:${type}`, target);
+            }
+        }
+
+        @Injectable()
+        class Foo {
+            constructor(@inject("IDep") d1, @inject("IKep") d2) {}
+        }
     })
 })
