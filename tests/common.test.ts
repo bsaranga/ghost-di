@@ -161,3 +161,20 @@ describe('Symbols', () => {
         expect((foo as any)[accessor]).toBe(true);
     })
 })
+
+describe('Proxies', () => {
+    it('', () => {
+        const target = {
+            value: 10
+        }
+
+        const handler = {
+            get: function(target: any, prop: string, receiver: any) {
+                return target[prop] + 1;
+            }
+        }
+
+        const proxy = new Proxy(target, handler);
+        expect(proxy.value).toBe(11);
+    })
+})
